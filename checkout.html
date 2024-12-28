@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Car Showroom</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const checkoutItemsList = document.getElementById('checkout-items');
+    const checkoutTotalElem = document.getElementById('checkout-total');
+    const checkoutForm = document.getElementById('checkout-form');
+
+    // Populate the checkout page with cart items
+    if (cart.length > 0) {
+        let totalPrice = 0;
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+            checkoutItemsList.appendChild(li);
+            totalPrice += item.price;
+        });
+
+        checkoutTotalElem.textContent = `Total: $${totalPrice.toFixed(2)}`;
+    } else {
+        checkoutItemsList.innerHTML = '<li>Your cart is empty.</li>';
+        checkoutTotalElem.textContent = 'Total: $0.00';
+    }
+
+    // Handle order confirmation
+    checkoutForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const address = document.getElementById('address').value;
+        const phone = document.getElementById('phone').value;
+
+        if (cart.length > 0) {
+            // Show confirmation message or send data to the server
+            alert(`Thank you for your order, ${name}! We will send the details to ${email}.`);
+
+            // Optionally, clear the cart after order submission
+            localStorage.removeItem('cart');
+
+            // Redirect to home page (index.html)
+            window.location.href = "index.html"; // Redirect to the homepage after successful order
+        } else {
+            alert('Your cart is empty. Please add some cars to your cart before proceeding.');
+        }
+    });
+});
+
+    </script>
+</head>
+<style>
+    .checkout {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+
+.checkout-summary, .checkout-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 48%;
+}
+
+.checkout-summary h2, .checkout-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#checkout-items {
+    list-style: none;
+    padding: 0;
+}
+
+#checkout-items li {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+#checkout-total {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.checkout-form label {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.checkout-form input, .checkout-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.checkout-form button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.checkout-form button:hover {
+    background-color: #218838;
+}
+
+</style>
+<body>
+    <header>
+      
+        <h1>Car Showroom</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="car-list.html">Cars</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="contact-us.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="checkout">
+            <div class="checkout-summary">
+                <h2>Order Summary</h2>
+                <ul id="checkout-items">
+                    <!-- Cart items will be populated here -->
+                </ul>
+                <p id="checkout-total">Total: $0</p>
+            </div>
+
+            <div class="checkout-form">
+                <h2>Shipping Information</h2>
+                <form id="checkout-form">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="address">Shipping Address:</label>
+                    <textarea id="address" name="address" required></textarea>
+
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required>
+
+                    <button type="submit" id="confirm-order">Confirm Order</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Car Showroom. All Rights Reserved.</p>
+    </footer>
+
+    <script src="checkout.js"></script>
+</body>
+</html>
